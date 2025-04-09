@@ -51,7 +51,17 @@ df, topic_model, embedding_model, index, texts = load_resources()
 
 # --- Streamlit UI ---
 st.title("🔍 Semantic Article Recommender")
-st.markdown("Search for research topics and get similar articles based on semantic similarity.")
+# 🇮🇹 LUISS University Logo
+st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/LUISS_Logo_2019.svg/2560px-LUISS_Logo_2019.svg.png", width=200)
+
+st.markdown("### 👩‍💻 Group Members")
+st.markdown("- Chiara Rossi  \n- Marco Bianchi  \n- Giulia Verdi")
+
+st.markdown("### 📘 Project Summary")
+st.markdown("""
+This app helps you find semantically similar academic articles using **BERTopic** and **FAISS**.  
+It was developed for our Data Science in Action course at **LUISS University of Rome**.
+""")
 
 query = st.text_input("Enter your search query", placeholder="e.g. green supply chain resilience")
 top_k = st.slider("Number of results", min_value=3, max_value=20, value=5)
