@@ -11,9 +11,12 @@ from sentence_transformers import SentenceTransformer
 def load_resources():
     # 📁 Define paths and Google Drive IDs
     model_folder = "bertopic_model_simple"
+    embedding_folder = "embedding_model"
     zip_model = f"{model_folder}.zip"
+    zip_embed = f"{embedding_folder}.zip"
     model_drive_id = "1oTBuwKboDFazlrAejk7911RtzTdemCNz"
     csv_drive_id = "1izjvaemSRnmEfDdG4aGF8yC8XEI_NVkB"
+    embed_drive_id = "1BhjEi2SSn1hEIEEqrzPuNmbH93C0lewm"
 
     # 🔽 Download and unzip BERTopic model
     if not os.path.exists(model_folder):
@@ -21,6 +24,14 @@ def load_resources():
             url = f"https://drive.google.com/uc?id={model_drive_id}"
             gdown.download(url, zip_model, quiet=False)
             with zipfile.ZipFile(zip_model, "r") as zip_ref:
+                zip_ref.extractall(".")
+
+    # 🔽 Download and unzip embedding model
+    if not os.path.exists(embedding_folder):
+        with st.spinner("Downloading embedding model..."):
+            url = f"https://drive.google.com/uc?id={embed_drive_id}"
+            gdown.download(url, zip_embed, quiet=False)
+            with zipfile.ZipFile(zip_embed, "r") as zip_ref:
                 zip_ref.extractall(".")
 
     # 🔽 Download CSV if missing
@@ -33,8 +44,8 @@ def load_resources():
     df = pd.read_csv("train_topic_output.csv")
     topic_model = BERTopic.load(model_folder)
 
-    # 🧠 Load fresh embedding model directly from Hugging Face
-    embedding_model = SentenceTransformer("paraphrase-MiniLM-L12-v2")
+    # ✅ Load embedding model from local folder (prevents HuggingFace downloads)
+    embedding_model = SentenceTransformer(embedding_folder, trust_remote_code=True)
     topic_model.embedding_model = embedding_model
 
     # ✅ Load embeddings
