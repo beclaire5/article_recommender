@@ -6,3 +6,4 @@ scikit-learn
 sentence-transformers
 bertopic
 gdown
+sentence-transformers==2.2.2
