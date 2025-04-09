@@ -43,8 +43,7 @@ def load_resources():
     # ✅ Load resources
     df = pd.read_csv("train_topic_output.csv")
     topic_model = BERTopic.load(model_folder)
-    embedding_model = SentenceTransformer(embedding_folder)
-    topic_model.embedding_model = embedding_model
+    embedding_model = topic_model.embedding_model
 
     # ✅ Load embeddings
     texts = df['cleaned_text'].astype(str).tolist()
