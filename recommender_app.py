@@ -55,7 +55,7 @@ st.title("🔍 Semantic Article Recommender")
 st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/LUISS_Logo_2019.svg/2560px-LUISS_Logo_2019.svg.png", width=200)
 
 st.markdown("### 👩‍💻 Group Members")
-st.markdown("- Chiara Rossi  \n- Marco Bianchi  \n- Giulia Verdi")
+st.markdown("- Chiara Barontini  \n- Daniele Biggi  \n- Michele Baldo")
 
 st.markdown("### 📘 Project Summary")
 st.markdown("""
