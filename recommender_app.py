@@ -73,7 +73,7 @@ top_k = st.slider("Number of results", min_value=3, max_value=20, value=5)
 
 if query:
     with st.spinner("Searching..."):
-        query_vec = embedding_model.encode([query])[0].astype("float32").reshape(1, -1)
+        query_vec = topic_model._embedding_model.embed([query])[0].astype("float32").reshape(1, -1)
         faiss.normalize_L2(query_vec)
         scores, indices = index.search(query_vec, top_k)
 
