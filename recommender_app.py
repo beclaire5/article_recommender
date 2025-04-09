@@ -17,17 +17,19 @@ def load_resources():
 
     # 🔽 Download and unzip model if missing
     if not os.path.exists(model_folder):
-        with st.spinner("Downloading BERTopic model from Google Drive..."):
+        with st.spinner("📦 Downloading BERTopic model from Google Drive..."):
             url = f"https://drive.google.com/uc?id={model_drive_id}"
             gdown.download(url, zip_file, quiet=False)
             with zipfile.ZipFile(zip_file, "r") as zip_ref:
                 zip_ref.extractall(".")
+            st.success("✅ BERTopic model downloaded!")
 
     # 🔽 Download CSV if missing
     if not os.path.exists("train_topic_output.csv"):
-        with st.spinner("Downloading topic output CSV from Google Drive..."):
+        with st.spinner("📄 Downloading topic output CSV from Google Drive..."):
             csv_url = f"https://drive.google.com/uc?id={csv_drive_id}"
             gdown.download(csv_url, "train_topic_output.csv", quiet=False)
+            st.success("✅ CSV file downloaded!")
 
     # 📦 Load model and CSV
     df = pd.read_csv("train_topic_output.csv")
@@ -50,34 +52,29 @@ def load_resources():
 df, topic_model, embedding_model, index, texts = load_resources()
 
 # --- Streamlit UI ---
+st.set_page_config(page_title="Semantic Article Recommender", layout="wide")
 st.title("🔍 Semantic Article Recommender")
-# 🇮🇹 LUISS University Logo
-st.markdown(
-    "<div style='text-align: center;'>"
-    "<img src='https://upload.wikimedia.org/wikipedia/commons/2/27/Luiss_logo.png' width='250'>"
-    "</div>",
-    unsafe_allow_html=True
-)
 
-st.markdown("### 👩‍💻 Group Members")
-st.markdown("- Chiara Barontini  \n- Daniele Biggi  \n- Michele Baldo")
+# 🇮🇹 LUISS University Logo (check if file exists)
+if os.path.exists("Logo_LUISS.png"):
+    st.image("Logo_LUISS.png", width=250)
 
-st.markdown("### 📘 Project Summary")
 st.markdown("""
 This app helps you find semantically similar academic articles using **BERTopic** and **FAISS**.  
-It was developed for our Data Science in Action course at **LUISS University of Rome**.
+Developed for the *Data Science in Action* course at **LUISS University of Rome**.  
+**By:** Chiara Barontini, Daniele Biggi, Michele Baldo.
 """)
 
-query = st.text_input("Enter your search query", placeholder="e.g. green supply chain resilience")
-top_k = st.slider("Number of results", min_value=3, max_value=20, value=5)
+query = st.text_input("📌 Enter your search query", placeholder="e.g. green supply chain resilience")
+top_k = st.slider("🔢 Number of results", min_value=3, max_value=20, value=5)
 
 if query:
-    with st.spinner("Searching..."):
+    with st.spinner("🔎 Searching..."):
         query_vec = embedding_model.encode([query])[0].astype("float32").reshape(1, -1)
         faiss.normalize_L2(query_vec)
         scores, indices = index.search(query_vec, top_k)
 
-        st.markdown(f"### 🔎 Top {top_k} Matches for: *{query}*")
+        st.markdown(f"### ✅ Top {top_k} Matches for: *{query}*")
         for idx, score in zip(indices[0], scores[0]):
             row = df.iloc[idx]
             st.markdown(f"**{row['display_name']}**")
