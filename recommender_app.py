@@ -52,7 +52,12 @@ df, topic_model, embedding_model, index, texts = load_resources()
 # --- Streamlit UI ---
 st.title("🔍 Semantic Article Recommender")
 # 🇮🇹 LUISS University Logo
-st.image("https://www.luiss.edu/sites/all/themes/luiss/logo.png", width=250)
+st.markdown(
+    "<div style='text-align: center;'>"
+    "<img src='https://upload.wikimedia.org/wikipedia/commons/2/27/Luiss_logo.png' width='250'>"
+    "</div>",
+    unsafe_allow_html=True
+)
 
 st.markdown("### 👩‍💻 Group Members")
 st.markdown("- Chiara Barontini  \n- Daniele Biggi  \n- Michele Baldo")
